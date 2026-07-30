@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* || VARIABLES */
+
+:root {
+  /* colors */
+  --FONT-COLOR: #fff;
+  --BACKGROUND-COLOR: rgba(0, 0, 225, 0.5); /*blue*/
+  --FOG-COLOR: darkslategray; /* or try darkolivegreen*/
+  --NIGHT-COLOR: rgba(204, 0, 102, 0.5); /* ruby or try midnightblue */
+  --MASK-COLOR: rgba(0, 0, 0, 0.1);
+  --BUTTON-COLOR: transparent;
+  --BORDER-COLOR: lightgray;
+  --CONTAINER-BGCOLOR: #f2f2f2;
+  --BUTTON-TEXT-COLOR: #fff;
+  --SHADOW-COLOR: #fff;
+  --TEXT-SHADOW-COLOR: #000;
+  --FADE-COLOR: rgba(225, 225, 225, 0.6);
+}
+
+/* || GENERAL STYLES */
+
+html {
+  background-color: var(--BACKGROUND-COLOR);
+  color: var(--FONT-COLOR);
+  font-family: "Montserrat", sans-serif;
+  @media screen and (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
