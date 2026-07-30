@@ -23,12 +23,28 @@
 }
 
 /* || UTILITY */
+/* accesibility */
 
 .offscreen {
   position: absolute;
-  left: -1000px;
+  left: -10000px;
 }
 
+.skip-link {
+  position: absolute;
+  left: -99999px;
+  top: 0;
+  z-index: 1;
+  color: var(--FONT-COLOR);
+  background-color: var(--TEXT-SHADOW-COLOR);
+}
+
+.skip-link:focus,
+.skip-link:active {
+  top: auto;
+  left: auto;
+}
+/* display toogle */
 .none {
   display: none;
 }
@@ -43,6 +59,7 @@ html {
   background-color: var(--BACKGROUND-COLOR);
   color: var(--FONT-COLOR);
   font-family: "Montserrat", sans-serif;
+  font-weight: bold;
   @media screen and (min-width: 768px) {
     font-size: 22px;
   }
@@ -77,4 +94,81 @@ hr {
   width: 90%;
   margin: auto;
   border: 1px solid var(--BORDER-COLOR);
+}
+
+/* || COMPONENTS */
+/* buttons */
+
+.button {
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--BUTTON-TEXT-COLOR);
+  border: 2px solid var(--BORDER-COLOR);
+  background-color: var(--BUTTON-COLOR);
+  outline: none;
+  font-size: 1.25rem;
+  border-radius: 80px;
+  font-weight: 900;
+  @media screen and (min-width: 768px) {
+    font-size: 1.5rem;
+    min-width: 64px;
+    min-height: 64px;
+  }
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+  box-shadow: 4px 2px 5px var(--TEXT-SHADOW-COLOR);
+  border-color: var(--FONT-COLOR);
+}
+
+/* || LAYOUT */
+
+/* search section */
+.searchBar {
+  padding: 0.5rem 0.5rem 1.5rem;
+
+  .searchBar__form {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid var(--BORDER-COLOR);
+    border-radius: 500px;
+
+    .searchBar__text {
+      flex-grow: 1;
+      border: none;
+      margin-right: 0.25rem;
+      background-color: var(--BUTTON-COLOR);
+      width: calc(100% -52px);
+      font-size: 1.25rem;
+      padding: 0.75rem 0 0.75rem 0.75rem;
+      outline: none;
+    }
+
+    .searchBar__text::placeholder {
+      color: var(--FADE-COLOR);
+    }
+
+    .searchBar__button {
+      border: none;
+      i {
+        font-size: 1.7rem;
+      }
+    }
+    .searchBar__button:hover,
+    .searchBar__button:focus {
+      border: none;
+      box-shadow: none;
+      text-shadow: 4px 2px 5px var(--TEXT-SHADOW-COLOR);
+    }
+  }
+
+  .searchBar__form:focus-within,
+  .searchBar__form:hover {
+    box-shadow: 4px 2px 5px var(--TEXT-SHADOW-COLOR);
+  }
 }
