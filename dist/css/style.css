@@ -57,6 +57,9 @@
 
 html {
   background-color: var(--BACKGROUND-COLOR);
+  background-image: url("../img/clouds.jpg");
+  background-size: cover;
+  background-blend-mode: overlay;
   color: var(--FONT-COLOR);
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
@@ -337,4 +340,63 @@ hr {
       }
     }
   }
+}
+
+/* || DAILY FORECAST SECTION */
+
+.dailyForecast {
+  .dailyForecast__title {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    @media screen and (min-width: 768px) {
+      font-size: 1.3rem;
+    }
+  }
+
+  .dailyForecast__contents {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: var(--FONT-COLOR);
+    padding: 0.5rem 0;
+
+    .forecastDay {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      font-size: 0.9rem;
+      @media screen and (min-width: 375px) {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+/* || BACKGROUND THEMES */
+.rain {
+  background-color: var(--BACKGROUND-COLOR);
+  background-image: url("../img/rain.jpg");
+}
+
+.snow {
+  background-color: var(--BACKGROUND-COLOR);
+  background-image: url("../img/snow.jpg");
+}
+
+.night {
+  background-color: var(--NIGHT-COLOR);
+  background-image: url("../img/fog.jpg");
+}
+
+.fog {
+  background-color: var(--FOG-COLOR);
+  background-image: url("../img/fog.jpg");
+}
+
+.clouds {
+  background-color: var(--FOG-COLOR);
+  background-image: url("../img/clouds.jpg");
 }
