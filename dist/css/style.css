@@ -400,3 +400,26 @@ hr {
   background-color: var(--FOG-COLOR);
   background-image: url("../img/clouds.jpg");
 }
+
+.zero-vis {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.fade-in {
+  visibility: visible;
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+}
+
+@keyframes fadeInOpacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
