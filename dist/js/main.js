@@ -12,12 +12,15 @@ const initApp = () => {
   //add Listeners
   const geoButton = document.getElementById("getLocation");
   geoButton.addEventListener("click", getGeoWeather);
-
   const homeButton = document.getElementById("home");
   homeButton.addEventListener("click", loadWeather);
-
   const saveButton = document.getElementById("saveLocation");
   saveButton.addEventListener("click", saveLocation);
+  const unitButton = document.getElementById("unit");
+  unitButton.addEventListener("click", setUnitPref);
+  const refreshButton = document.getElementById("refresh");
+  refreshButton.addEventListener("click", refreshWeather);
+
   //set up
   //load default weather
   loadWeather();
@@ -65,6 +68,18 @@ const loadWeather = (event) => {
   }
 };
 
+const setUnitPref = () => {
+  const unitIcon = document.querySelector(".fa-chart-column");
+  addSpinner(unitIcon);
+  currentLoc.toogleUnit();
+  updateDataAndDisplay(currentLoc);
+};
+
+const refreshWeather = () => {
+  const refreshIcon = document.querySelector(".refresh");
+  addSpinner(refreshIcon);
+  updateDataAndDisplay(currentLoc);
+};
 const updateDataAndDisplay = async (locationObj) => {
   // const weatherJson = await getWeatherFromCoords(locationObj);
   // if (weatherJson) updateDisplay(weatherJson, locationObj);
