@@ -10,3 +10,9 @@ export const setLocationObject = (locationObject, coordsObj) => {
 
 export const getHomeLocation = () =>
   localStorage.getItem("defaultWeatherLocation");
+
+export const cleanText = (text) => {
+  const regex = / {2,}/g;
+  const entryText = text.replaceAll(regex, " ").trim();
+  return entryText;
+};
