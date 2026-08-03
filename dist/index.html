@@ -62,13 +62,18 @@
         <h2 id="currentForecast__location" class="currentForecast__location">
           Current Location
         </h2>
-        <div
-          id="currentForecast__condition"
-          class="currentForecast__condition"
-        ></div>
+        <div id="currentForecast__condition" class="currentForecast__condition">
+          <img
+            id="weather-icon"
+            src="../node_modules/@meteocons/svg/fill/clear-day.svg"
+            alt=""
+            width="64"
+            height="64"
+          />
+        </div>
       </section>
 
-      <a href="#currentForecast" class="skip-link">Skip to Daily Forecast</a>
+      <a href="#dailyForecast" class="skip-link">Skip to Daily Forecast</a>
       <nav class="navButtons fade-in" id="navButtons">
         <button
           id="getLocation"

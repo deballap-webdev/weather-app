@@ -193,6 +193,7 @@ hr {
     font-weight: normal;
     text-align: center;
     margin-bottom: 1rem;
+    margin-inline: 0.5rem;
     @media screen and (min-width: 768px) {
       font-size: 1.3rem;
     }
@@ -388,7 +389,12 @@ hr {
 
 .night {
   background-color: var(--NIGHT-COLOR);
-  background-image: url("../img/fog.jpg");
+  background-image: url("../img/night.jpg");
+}
+
+.thunder {
+  background-color: var(--BACKGROUND-COLOR);
+  background-image: url("../img/thunder.jpg");
 }
 
 .fog {
@@ -397,7 +403,7 @@ hr {
 }
 
 .clouds {
-  background-color: var(--FOG-COLOR);
+  background-color: var(--BACKGROUND-COLOR);
   background-image: url("../img/clouds.jpg");
 }
 

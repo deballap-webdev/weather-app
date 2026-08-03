@@ -1,9 +1,20 @@
-import { setLocationObject, getHomeLocation } from "./dataFunctions.js";
+import {
+  setLocationObject,
+  getHomeLocation,
+  getWeatherFromCoords,
+  cleanText,
+  getCoordsFromApi,
+  generateName,
+} from "./dataFunctions.js";
 import CurrentLocation from "./CurrentLocation.js";
 import {
+  updateDisplay,
+  setPlaceholderText,
   addSpinner,
   displayError,
   updateScreenReaderConfirmation,
+  getWeatherDetails,
+  displayApiError,
 } from "./domFunctions.js";
 
 const currentLoc = new CurrentLocation();
@@ -20,8 +31,10 @@ const initApp = () => {
   unitButton.addEventListener("click", setUnitPref);
   const refreshButton = document.getElementById("refresh");
   refreshButton.addEventListener("click", refreshWeather);
-
+  const locationEntry = document.getElementById("searchBar__form");
+  locationEntry.addEventListener("submit", submitNewLocation);
   //set up
+  setPlaceholderText();
   //load default weather
   loadWeather();
 };
@@ -61,7 +74,7 @@ const loadWeather = (event) => {
       "Sorry. Please save your home location first",
     );
   } else if (savedLocation && !event) {
-    displayHomeLocation(savedLocation);
+    displayHomeLocationWeather(savedLocation);
   } else if (savedLocation && event) {
     const homeIcon = document.querySelector("fa-house-chimney");
     addSpinner(homeIcon);
@@ -80,9 +93,48 @@ const refreshWeather = () => {
   addSpinner(refreshIcon);
   updateDataAndDisplay(currentLoc);
 };
+
+const submitNewLocation = async (event) => {
+  event.preventDefault();
+  const text = document.getElementById("searchBar__text").value;
+  const entryText = cleanText(text);
+  if (!entryText.length) return;
+  const searchIcon = document.querySelector(".fa-magnifying-glass");
+  addSpinner(searchIcon);
+  const coordsData = await getCoordsFromApi(entryText, currentLoc.currentUnit);
+  console.log(coordsData);
+  if (coordsData) {
+    if (coordsData.error) {
+      displayApiError(coordsData.reason);
+      return;
+    }
+    if (coordsData.results) {
+      // work with api data
+      console.log(generateName(coordsData));
+      const myCoordsObj = {
+        lat: coordsData.results[0].latitude,
+        lon: coordsData.results[0].longitude,
+        name: generateName(coordsData),
+      };
+      setLocationObject(currentLoc, myCoordsObj);
+      updateDataAndDisplay(currentLoc);
+    } else {
+      displayError("No Match Found", "No Match Found");
+    }
+  } else {
+    displayError("Connection Error", "Connection Error");
+  }
+};
 const updateDataAndDisplay = async (locationObj) => {
-  // const weatherJson = await getWeatherFromCoords(locationObj);
-  // if (weatherJson) updateDisplay(weatherJson, locationObj);
+  const weatherJson = await getWeatherFromCoords(locationObj);
+  console.log(weatherJson);
+  console.log(weatherJson.current.weather_code);
+  const details = getWeatherDetails(
+    weatherJson.current.weather_code,
+    weatherJson.current.is_day,
+  );
+  console.log(details);
+  if (weatherJson) updateDisplay(weatherJson, locationObj);
 };
 
 const displayHomeLocationWeather = (home) => {
@@ -115,4 +167,5 @@ const saveLocation = () => {
     );
   }
 };
+
 document.addEventListener("DOMContentLoaded", initApp());
