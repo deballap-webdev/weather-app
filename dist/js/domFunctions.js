@@ -21,8 +21,8 @@ export const displayError = (headerMsg, srMsg) => {
   updateScreenReaderConfirmation(srMsg);
 };
 
-export const displayApiError = (statusCode) => {
-  const properMsg = toProperCase(statusCode.message);
+export const displayApiError = (reason) => {
+  const properMsg = toProperCase(reason);
   updateWeatherLocationHeader(properMsg);
   updateScreenReaderConfirmation(`${properMsg}. Please try again`);
 };
@@ -58,6 +58,18 @@ export const updateDisplay = (weatherJson, locationObj) => {
   );
   updateScreenReaderConfirmation(screenReaderWeather);
   updateWeatherLocationHeader(locationObj.locationName);
+  //todo current conditions
+  const ccArray = createCurrentConditionDivs(
+    weatherJson,
+    locationObj.locationName,
+  );
+  const ccDiv = document.getElementById("currentForecast__condition");
+  console.log(ccDiv);
+  ccArray.forEach((div) => {
+    ccDiv.append(div);
+  });
+  //todo six day forecast
+  setFocusOnSearch();
   fadeDisplay();
 };
 
@@ -81,25 +93,100 @@ const clearDisplay = () => {
 };
 
 const deleteContents = (parentElement) => {
-  console.log(parentElement);
   while (parentElement.lastElementChild) {
     parentElement.lastElementChild.remove();
   }
 };
 
 export const getWeatherDetails = (code, isDay) => {
-  const config = weatherCode[code];
-  if (!config) return "not-available";
+  const config = weatherCode[code] ? weatherCode[code] : weatherCode.default;
+
   const time = isDay ? "day" : "night";
   const weatherC =
     config.class === "clouds" && time === "night" ? "night" : config.class;
 
-  console.log(weatherC);
   return {
     iconName: config[time],
     description: config.label,
     weatherClass: weatherC,
   };
+};
+
+const createCurrentConditionDivs = (weatherObj) => {
+  console.log(weatherObj);
+  const weatherDetails = getWeatherDetails(
+    weatherObj.current.weather_code,
+    weatherObj.current.is_day,
+  );
+  const tempUnit = weatherObj.current_units.temperature_2m === "°F" ? "F" : "C";
+  const windUnit = weatherObj.current_units.wind_speed_10m;
+  const icon = createMainImgDiv(weatherObj, weatherDetails);
+  const temp = createElem(
+    "div",
+    "temp",
+    `${Math.round(Number(weatherObj.current.temperature_2m))}°`,
+    `${tempUnit}`,
+  );
+  const maxTemp = createElem(
+    "div",
+    "maxtemp",
+    `High ${Math.round(Number(weatherObj.daily.temperature_2m_max[0]))}°`,
+  );
+  const minTemp = createElem(
+    "div",
+    "mintemp",
+    `Low ${Math.round(Number(weatherObj.daily.temperature_2m_min[0]))}°`,
+  );
+  const desc = createElem("div", "desc", `${weatherDetails.description}`);
+  const feels = createElem(
+    "div",
+    "feels",
+    `Feels Like ${Math.round(Number(weatherObj.current.apparent_temperature))}°`,
+  );
+  const humidity = createElem(
+    "div",
+    "humidity",
+    `Humidity ${Math.round(Number(weatherObj.current.relative_humidity_2m))}%`,
+  );
+  const wind = createElem(
+    "div",
+    "wind",
+    `Wind ${Math.round(Number(weatherObj.current.wind_speed_10m))} ${windUnit}`,
+  );
+  return [icon, temp, maxTemp, minTemp, desc, feels, humidity, wind];
+};
+
+const buildIconImg = (weatherDetails) => {
+  const img = document.createElement("img");
+  img.src = `img/weather-icons/${weatherDetails.iconName}.svg`;
+  img.title = weatherDetails.iconName;
+  img.alt = weatherDetails.description;
+  img.ariaHidden = true;
+  return img;
+};
+
+const createMainImgDiv = (weatherObj, weatherDetails) => {
+  const iconDiv = createElem("div", "icon");
+  iconDiv.id = "icon";
+  const iconImg = buildIconImg(weatherDetails);
+
+  iconDiv.appendChild(iconImg);
+  return iconDiv;
+};
+
+const createElem = (elemType, divClassName, divText, unit) => {
+  const div = document.createElement(elemType);
+  div.className = divClassName;
+  if (divText) {
+    div.textContent = divText;
+  }
+  if (divClassName === "temp") {
+    const unitDiv = document.createElement("div");
+    unitDiv.textContent = unit;
+    unitDiv.className = "unit";
+    div.appendChild(unitDiv);
+  }
+  return div;
 };
 
 const weatherCode = {
@@ -258,6 +345,13 @@ const weatherCode = {
     label: "Thunderstorm with Heavy Hail",
     class: "thunder",
   },
+
+  default: {
+    day: "not-available",
+    night: "not-avilable",
+    label: "not-available",
+    class: "clouds",
+  },
 };
 
 const setBGImage = (weatherClass) => {
@@ -272,4 +366,8 @@ const buildScreenReaderWeather = (weatherJson, locationObj, description) => {
   const location = locationObj.locationName;
   const unit = locationObj.currentUnit;
   return `${description} and ${weatherJson.current.temperature_2m} ${unit} in ${location} `;
+};
+
+const setFocusOnSearch = () => {
+  document.getElementById("searchBar__text").focus();
 };

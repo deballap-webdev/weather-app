@@ -106,9 +106,11 @@ const submitNewLocation = async (event) => {
   if (coordsData) {
     if (coordsData.error) {
       displayApiError(coordsData.reason);
+      console.log(coordsData.reason);
       return;
     }
     if (coordsData.results) {
+      console.log(coordsData.results);
       // work with api data
       console.log(generateName(coordsData));
       const myCoordsObj = {
@@ -125,15 +127,13 @@ const submitNewLocation = async (event) => {
     displayError("Connection Error", "Connection Error");
   }
 };
+
 const updateDataAndDisplay = async (locationObj) => {
   const weatherJson = await getWeatherFromCoords(locationObj);
-  console.log(weatherJson);
-  console.log(weatherJson.current.weather_code);
-  const details = getWeatherDetails(
-    weatherJson.current.weather_code,
-    weatherJson.current.is_day,
-  );
-  console.log(details);
+  if (weatherJson.error) {
+    displayApiError(weatherJson.reason);
+    return;
+  }
   if (weatherJson) updateDisplay(weatherJson, locationObj);
 };
 

@@ -15,14 +15,16 @@ export const getWeatherFromCoords = async (locationObj) => {
   const lat = locationObj.latitude;
   const lon = locationObj.longitude;
   const unit = locationObj.currentUnit;
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&temperature_unit=${unit}&daily=weather_code,temperature_2m_min,temperature_2m_max&current=weather_code,is_day,apparent_temperature,relative_humidity_2m,wind_speed_10m,temperature_2m&timezone=auto&wind_speed_unit=mph`;
+  const tempUnit = unit === "imperial" ? "fahrenheit" : "celsius";
+  const windUnit = unit === "imperial" ? "mph" : "ms";
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&temperature_unit=${tempUnit}&daily=weather_code,temperature_2m_min,temperature_2m_max&current=weather_code,is_day,apparent_temperature,relative_humidity_2m,wind_speed_10m,temperature_2m&timezone=auto&wind_speed_unit=${windUnit}`;
 
   try {
     const weatherStream = await fetch(url);
     const weatherJson = await weatherStream.json();
     return weatherJson;
   } catch (err) {
-    console.log(err);
+    console.log(err.stack);
   }
 };
 
@@ -33,7 +35,6 @@ export const getCoordsFromApi = async (entryText, units) => {
     const dataStream = await fetch(encodedUrl);
     const jsonData = await dataStream.json();
     return jsonData;
-    console.log(jsonData);
   } catch (err) {
     console.log(err.stack);
   }

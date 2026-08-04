@@ -7,7 +7,7 @@ export default class CurrentLocation {
     this.#lon = null;
     this.#lat = null;
     this.#name = "Current Location";
-    this.#unit = "celsius";
+    this.#unit = "imperial";
   }
 
   get longitude() {
@@ -43,6 +43,6 @@ export default class CurrentLocation {
   }
 
   toogleUnit() {
-    this.#unit = this.#unit === "celsius" ? "fahrenheit" : "celsius";
+    this.#unit = this.#unit === "imperial" ? "metric" : "imperial";
   }
 }
