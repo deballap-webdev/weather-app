@@ -58,16 +58,12 @@ export const updateDisplay = (weatherJson, locationObj) => {
   );
   updateScreenReaderConfirmation(screenReaderWeather);
   updateWeatherLocationHeader(locationObj.locationName);
-  //todo current conditions
   const ccArray = createCurrentConditionDivs(
     weatherJson,
     locationObj.locationName,
   );
-  const ccDiv = document.getElementById("currentForecast__condition");
-  console.log(ccDiv);
-  ccArray.forEach((div) => {
-    ccDiv.append(div);
-  });
+  displayCurrentConditions(ccArray);
+
   //todo six day forecast
   setFocusOnSearch();
   fadeDisplay();
@@ -98,13 +94,11 @@ const deleteContents = (parentElement) => {
   }
 };
 
-export const getWeatherDetails = (code, isDay) => {
+const getWeatherDetails = (code, isDay) => {
   const config = weatherCode[code] ? weatherCode[code] : weatherCode.default;
-
   const time = isDay ? "day" : "night";
   const weatherC =
     config.class === "clouds" && time === "night" ? "night" : config.class;
-
   return {
     iconName: config[time],
     description: config.label,
@@ -189,6 +183,13 @@ const createElem = (elemType, divClassName, divText, unit) => {
   return div;
 };
 
+const displayCurrentConditions = (array) => {
+  const ccDiv = document.getElementById("currentForecast__condition");
+  console.log(ccDiv);
+  array.forEach((div) => {
+    ccDiv.append(div);
+  });
+};
 const weatherCode = {
   0: {
     day: "clear-day",
