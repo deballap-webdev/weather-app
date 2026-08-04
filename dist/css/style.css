@@ -248,13 +248,13 @@ hr {
       grid-row: 1 / span 1;
       grid-column: 3 / span 2;
 
-      i {
+      /*  i {
         font-size: 3rem;
         text-shadow: 1px 0 5px var(--TEXT-SHADOW-COLOR);
         @media screen and (min-width: 768px) {
           font-size: 4rem;
-        }
-      }
+        } 
+      }*/
     }
     .maxtemp {
       display: flex;
