@@ -13,7 +13,6 @@ import {
   addSpinner,
   displayError,
   updateScreenReaderConfirmation,
-  getWeatherDetails,
   displayApiError,
 } from "./domFunctions.js";
 
@@ -59,7 +58,7 @@ const geoSuccess = (position) => {
   const myCoordsObj = {
     lat: position.coords.latitude,
     lon: position.coords.longitude,
-    name: `Lat:${position.coords.latitude} Long:${position.coords.longitude}`,
+    name: `Lat: ${position.coords.latitude.toFixed(2)} • Long: ${position.coords.longitude.toFixed(2)}`,
   };
   setLocationObject(currentLoc, myCoordsObj);
   updateDataAndDisplay(currentLoc);
