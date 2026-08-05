@@ -37,6 +37,8 @@ const toProperCase = (text) => {
 
 const updateWeatherLocationHeader = (message) => {
   const h2 = document.getElementById("currentForecast__location");
+  if (message.indexOf("Lat:") !== -1 && message.indexOf("Long:") !== -1) {
+  }
   h2.textContent = message;
 };
 
@@ -65,6 +67,7 @@ export const updateDisplay = (weatherJson, locationObj) => {
   displayCurrentConditions(ccArray);
 
   //todo six day forecast
+  displaySixDayForecast(weatherJson);
   setFocusOnSearch();
   fadeDisplay();
 };
@@ -107,7 +110,6 @@ const getWeatherDetails = (code, isDay) => {
 };
 
 const createCurrentConditionDivs = (weatherObj) => {
-  console.log(weatherObj);
   const weatherDetails = getWeatherDetails(
     weatherObj.current.weather_code,
     weatherObj.current.is_day,
@@ -185,11 +187,69 @@ const createElem = (elemType, divClassName, divText, unit) => {
 
 const displayCurrentConditions = (array) => {
   const ccDiv = document.getElementById("currentForecast__condition");
-  console.log(ccDiv);
   array.forEach((div) => {
     ccDiv.append(div);
   });
 };
+
+const displaySixDayForecast = (weatherJson) => {
+  for (let i = 1; i <= 6; i++) {
+    const dfArray = createDailyForecastDivs(weatherJson.daily, i);
+    displayDailyForecast(dfArray);
+  }
+};
+
+const createDailyForecastDivs = (dailyJson, dayNum) => {
+  const dayAbbreviationText = getDayAbbreviationText(dailyJson.time[dayNum]);
+  const dayAbbreviation = createElem(
+    "p",
+    "dayAbbreviation",
+    dayAbbreviationText,
+  );
+  const dayIcon = createDailyForecastIcon(dailyJson.weather_code[dayNum]);
+  const dayHigh = createElem(
+    "p",
+    "dayHigh",
+    `${Math.round(dailyJson.temperature_2m_max[dayNum])}°`,
+  );
+  const dayLow = createElem(
+    "p",
+    "dayLow",
+    `${Math.round(dailyJson.temperature_2m_min[dayNum])}°`,
+  );
+  return [dayAbbreviation, dayIcon, dayHigh, dayLow];
+};
+
+const getDayAbbreviationText = (data) => {
+  const date = new Date(data).toLocaleDateString("en-US", {
+    weekday: "short",
+    timeZone: "UTC",
+  });
+  return date.toUpperCase();
+};
+
+const createDailyForecastIcon = (data) => {
+  const weatherDetails = getWeatherDetails(data, 1);
+  const img = document.createElement("img");
+  img.src = `img/weather-icons/${weatherDetails.iconName}.svg`;
+  if (innerHeight > 768 || innerWidth > 1025) {
+    img.height = "64";
+    img.width = "64 ";
+  }
+  img.title = weatherDetails.iconName;
+  img.alt = weatherDetails.description;
+  return img;
+};
+
+const displayDailyForecast = (dfArray) => {
+  const dfContainer = document.getElementById("dailyForecast__contents");
+  const div = createElem("div", "forecastDay");
+  dfArray.forEach((elem) => {
+    div.append(elem);
+  });
+  dfContainer.append(div);
+};
+
 const weatherCode = {
   0: {
     day: "clear-day",
