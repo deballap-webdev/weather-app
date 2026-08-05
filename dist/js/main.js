@@ -101,17 +101,13 @@ const submitNewLocation = async (event) => {
   const searchIcon = document.querySelector(".fa-magnifying-glass");
   addSpinner(searchIcon);
   const coordsData = await getCoordsFromApi(entryText, currentLoc.currentUnit);
-  console.log(coordsData);
   if (coordsData) {
     if (coordsData.error) {
       displayApiError(coordsData.reason);
-      console.log(coordsData.reason);
       return;
     }
     if (coordsData.results) {
-      console.log(coordsData.results);
       // work with api data
-      console.log(generateName(coordsData));
       const myCoordsObj = {
         lat: coordsData.results[0].latitude,
         lon: coordsData.results[0].longitude,
