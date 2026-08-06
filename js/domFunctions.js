@@ -37,8 +37,6 @@ const toProperCase = (text) => {
 
 const updateWeatherLocationHeader = (message) => {
   const h2 = document.getElementById("currentForecast__location");
-  if (message.indexOf("Lat:") !== -1 && message.indexOf("Long:") !== -1) {
-  }
   h2.textContent = message;
 };
 
@@ -425,7 +423,10 @@ const setBGImage = (weatherClass) => {
 
 const buildScreenReaderWeather = (weatherJson, locationObj, description) => {
   const location = locationObj.locationName;
-  const unit = locationObj.currentUnit;
+  const unit =
+    locationObj.currentUnit === "imperial"
+      ? "degree fahrenheit"
+      : "degree celsius";
   return `${description} and ${weatherJson.current.temperature_2m} ${unit} in ${location} `;
 };
 
