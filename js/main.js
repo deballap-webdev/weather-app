@@ -75,8 +75,9 @@ const loadWeather = (event) => {
   } else if (savedLocation && !event) {
     displayHomeLocationWeather(savedLocation);
   } else if (savedLocation && event) {
-    const homeIcon = document.querySelector("fa-house-chimney");
+    const homeIcon = document.querySelector(".fa-house-chimney");
     addSpinner(homeIcon);
+    displayHomeLocationWeather(savedLocation);
   }
 };
 
